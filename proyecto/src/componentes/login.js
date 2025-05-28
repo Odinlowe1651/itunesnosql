@@ -1,36 +1,34 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebaseConfig.js'; // Ajusta el path si es diferente
-import mostrarRegistro  from './registro.js';
-
-export default function mostrarLogin() {
+export default async function mostrarHome() {
   const app = document.getElementById("app");
-
   app.innerHTML = `
-    <div style="max-width: 400px; margin: auto; padding: 20px;">
-      <h2>Iniciar Sesión</h2>
-      <input type="email" id="correo" placeholder="Correo electrónico" style="width: 100%; padding: 10px; margin-bottom: 10px;" />
-      <input type="password" id="contrasena" placeholder="Contraseña" style="width: 100%; padding: 10px; margin-bottom: 10px;" />
-      <button id="btnLogin" style="width: 100%; padding: 10px;">Ingresar</button>
-      <p style="margin-top: 10px; text-align: center;">
-        ¿No tienes cuenta?
-        <a href="#" id="irRegistro">Regístrate</a>
-      </p>
-    </div>
+    <h2>Destacados</h2>
+    <div id="lista" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 10px;"></div>
   `;
 
-  document.getElementById("btnLogin").addEventListener("click", async () => {
-    const correo = document.getElementById("correo").value;
-    const contrasena = document.getElementById("contrasena").value;
+  const lista = document.getElementById("lista");
 
-    try {
-      await signInWithEmailAndPassword(auth, correo, contrasena);
-    } catch (error) {
-      alert("Error al iniciar sesión: " + error.message);
-    }
-  });
+  try {
+    // Fetch desde la API de iTunes
+    const res = await fetch("https://itunes.apple.com/search?term=top+songs&media=music&limit=20");
+    const json = await res.json();
+    const data = json.results;
 
-  document.getElementById("irRegistro").addEventListener("click", (e) => {
-    e.preventDefault();
-    mostrarRegistro();
-  });
+    data.forEach((item, index) => {
+      const name = item.trackName || item.collectionName || 'Sin título';
+      const artwork = item.artworkUrl100;
+      const preview = item.previewUrl;
+      const container = document.createElement("div");
+
+      container.className = "item";
+      container.innerHTML = `
+        <img src="${artwork}" alt="${name}" style="width: 100px; height: 100px; border-radius: 4px;" />
+        <p>${index + 1} - ${name}</p>
+        ${preview ? `<audio controls src="${preview}" style="width: 100%; border-radius: 4px;"></audio>` : ``}
+      `;
+
+      lista.appendChild(container);
+    });
+  } catch (error) {
+    app.innerHTML = `<p>Error al cargar los destacados: ${error.message}</p>`;
+  }
 }
