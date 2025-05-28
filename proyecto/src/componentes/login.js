@@ -1,34 +1,35 @@
-export default async function mostrarHome() {
-  const app = document.getElementById("app");
+// src/componentes/login.js
+
+import { auth } from '../firebaseConfig.js';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import mostrarRegistro from './registro.js';
+
+export default function mostrarLogin() {
+  const app = document.getElementById('app');
   app.innerHTML = `
-    <h2>Destacados</h2>
-    <div id="lista" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; padding: 10px;"></div>
+    <div class="login-container">
+      <h2>Iniciar Sesión</h2>
+      <input type="email" id="email" placeholder="Correo electrónico" />
+      <input type="password" id="password" placeholder="Contraseña" />
+      <button id="login-btn">Entrar</button>
+      <p>¿No tienes cuenta? <a href="#" id="go-register">Regístrate</a></p>
+    </div>
   `;
 
-  const lista = document.getElementById("lista");
+  // Evento para el botón de login
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      alert('Error al iniciar sesión: ' + error.message);
+    }
+  });
 
-  try {
-    // Fetch desde la API de iTunes
-    const res = await fetch("https://itunes.apple.com/search?term=top+songs&media=music&limit=20");
-    const json = await res.json();
-    const data = json.results;
-
-    data.forEach((item, index) => {
-      const name = item.trackName || item.collectionName || 'Sin título';
-      const artwork = item.artworkUrl100;
-      const preview = item.previewUrl;
-      const container = document.createElement("div");
-
-      container.className = "item";
-      container.innerHTML = `
-        <img src="${artwork}" alt="${name}" style="width: 100px; height: 100px; border-radius: 4px;" />
-        <p>${index + 1} - ${name}</p>
-        ${preview ? `<audio controls src="${preview}" style="width: 100%; border-radius: 4px;"></audio>` : ``}
-      `;
-
-      lista.appendChild(container);
-    });
-  } catch (error) {
-    app.innerHTML = `<p>Error al cargar los destacados: ${error.message}</p>`;
-  }
+  // Enlace para ir a registro
+  document.getElementById('go-register').addEventListener('click', (e) => {
+    e.preventDefault();
+    mostrarRegistro();
+  });
 }
