@@ -7,15 +7,18 @@ export default function mostrarRegistro() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
-    <h2>Registro</h2>
-    <input type="text" id="nombre" placeholder="Nombre"><br>
-    <input type="email" id="correo" placeholder="Correo electrónico"><br>
-    <input type="password" id="contrasena" placeholder="Contraseña"><br>
-    <input type="text" id="fecha" placeholder="Fecha de nacimiento"><br>
-    <input type="tel" id="telefono" placeholder="Teléfono"><br>
+  <div class="registro-container">
+    <h2>iTunes Web App</h2>
+    <h3>Registro</h3>
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="email" id="correo" placeholder="Correo electrónico">
+    <input type="password" id="contrasena" placeholder="Contraseña">
+    <input type="text" id="fecha" placeholder="Fecha de nacimiento">
+    <input type="tel" id="telefono" placeholder="Teléfono">
     <button id="btnRegistro">Registrarse</button>
     <p><a href="#" id="irLogin">¿Ya tienes cuenta? Inicia sesión</a></p>
-  `;
+  </div>
+`;
 
   document.getElementById("btnRegistro").addEventListener("click", async () => {
     const nombre = document.getElementById("nombre").value;

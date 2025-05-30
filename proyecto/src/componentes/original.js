@@ -42,20 +42,20 @@ async function guardarReproduccion(cancion) {
 
 function render(reproducciones = []) {
   app.innerHTML = '';
-  const title = createElement('h2', {}, 'Últimas reproducciones');
+  const title = createElement('h1', {}, 'Últimas reproducciones');
   app.appendChild(title);
 
   if (reproducciones.length === 0) {
-    app.appendChild(createElement('p', {}, 'Aún no has reproducido canciones.'));  
+    app.appendChild(createElement('p', { style: 'color:#888;text-align:center;margin-top:50px;' }, 'Aún no has reproducido canciones.'));  
     return;
   }
 
-  const listDiv = createElement('div', { className: 'list', style: 'display: flex; flex-wrap: wrap; gap: 10px;' });
+  const listDiv = createElement('div', { className: 'list' });
   reproducciones.forEach(item => {
-    const card = createElement('div', { className: 'item', style: 'background:#222;padding:10px;border-radius:8px;text-align:center;position:relative;' },
-      createElement('img', { src: item.artwork, alt: item.nombre, style: 'width:100px;border-radius:4px;' }),
+    const card = createElement('div', { className: 'item' },
+      createElement('img', { src: item.artwork, alt: item.nombre }),
       createElement('p', {}, item.nombre),
-      item.preview ? createElement('audio', { controls: true, src: item.preview, style: 'width:100%;margin-top:8px;border-radius:4px;' }) : null
+      item.preview ? createElement('audio', { controls: true, src: item.preview }) : null
     );
     listDiv.appendChild(card);
   });

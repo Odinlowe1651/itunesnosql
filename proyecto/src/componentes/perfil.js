@@ -23,14 +23,14 @@ export default async function mostrarPerfil() {
 
   // Renderizar formulario
   app.innerHTML = `
-    <h2>Perfil del Usuario</h2>
-    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 400px;">
-      <input id="nombre" placeholder="Nombre" value="${nombre}" />
-      <input id="fecha" placeholder="Fecha de nacimiento (YYYY-MM-DD)" value="${fecha}" />
-      <input id="telefono" placeholder="Teléfono" value="${telefono}" />
-      <button id="guardar">Guardar cambios</button>
-    </div>
-  `;
+  <h1>Perfil del Usuario</h1>
+  <div class="login-container">
+    <input id="nombre" placeholder="Nombre" value="${nombre}" />
+    <input id="fecha" placeholder="Fecha de nacimiento (YYYY-MM-DD)" value="${fecha}" />
+    <input id="telefono" placeholder="Teléfono" value="${telefono}" />
+    <button id="guardar">Guardar cambios</button>
+  </div>
+`;
 
   document.getElementById('guardar').addEventListener('click', async () => {
     const nuevoNombre = document.getElementById('nombre').value;
